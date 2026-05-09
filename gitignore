@@ -1,0 +1,14 @@
+# Databricks
+.databricks/
+*.py[cod]
+__pycache__/
+
+# Checkpoint files
+.ipynb_checkpoints/
+
+# Environment
+.env
+*.env
+
+# MacOS
+.DS_Store
