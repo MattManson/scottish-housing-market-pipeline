@@ -21,13 +21,13 @@ A Databricks portfolio project analysing the Scottish housing market, correlatin
 |---|--------|--------|--------|-------|
 | 01 | UK HPI Full File (Land Registry) | CSV | Complete | Mean price, volume, property type for Scotland + 32 local authorities |
 | 02 | RoS House Price Statistics | XLSX | Skipped | Cloudflare blocks all programmatic access. Would have provided median price by local authority. Manual download available at ros.gov.uk |
-| 03 | BoE Base Rate | CSV via API | Pending | |
-| 04 | BoE Mortgage Approvals | CSV via API | Pending | |
-| 05 | ONS CPIH | CSV via version discovery | Pending | |
-| 06 | ONS Average Weekly Earnings | CSV | Pending | |
-| 07 | LBTT Statistics (Revenue Scotland) | ODS | Pending | |
-| 08 | DWP Claimant Count (NOMIS) | CSV via API | Pending | |
-| 09 | Scottish Postcode Lookup (NRS) | ZIP/CSV | Pending | |
+| 03 | BoE Base Rate | Complete | Complete | 268 rows, User-Agent required |
+| 04 | BoE Mortgage Approvals | Complete | Complete | 267 rows, UK-wide |
+| 05 | ONS CPIH | Complete | Complete | 1,828 rows, 4 components |
+| 06 | ONS AWE | Complete | Complete | 314 rows, GB-wide |
+| 07 | LBTT Statistics | Pending | Pending | ODS format, multiple sheets |
+| 08 | DWP Claimant Count | Pending | Pending | Pagination issue to resolve |
+| 09 | Scottish Postcode Lookup | Pending | Pending | One-time setup load |
 
 ## Medallion Layers
 
