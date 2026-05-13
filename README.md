@@ -15,19 +15,41 @@ A Databricks portfolio project analysing the Scottish housing market, correlatin
 - **Governance:** Unity Catalog
 - **Language:** Python / PySpark
 
-## Data Sources
+## Source Status
 
-| # | Source | Format | Status | Notes |
+| # | Source | Bronze | Silver | Notes |
 |---|--------|--------|--------|-------|
-| 01 | UK HPI Full File (Land Registry) | CSV | Complete | Mean price, volume, property type for Scotland + 32 local authorities |
-| 02 | RoS House Price Statistics | XLSX | Skipped | Cloudflare blocks all programmatic access. Would have provided median price by local authority. Manual download available at ros.gov.uk |
-| 03 | BoE Base Rate | Complete | Complete | 268 rows, User-Agent required |
-| 04 | BoE Mortgage Approvals | Complete | Complete | 267 rows, UK-wide |
-| 05 | ONS CPIH | Complete | Complete | 1,828 rows, 4 components |
-| 06 | ONS AWE | Complete | Complete | 314 rows, GB-wide |
-| 07 | LBTT Statistics | Pending | Pending | ODS format, multiple sheets |
-| 08 | DWP Claimant Count | Pending | Pending | Pagination issue to resolve |
-| 09 | Scottish Postcode Lookup | Pending | Pending | One-time setup load |
+| 01 | UK HPI (Land Registry) | Complete | Complete | 9,207 Scottish rows, Jan 1968 to Feb 2026 |
+| 02 | RoS House Price Stats | Skipped | Skipped | Cloudflare blocked, documented in notebook |
+| 03 | BoE Base Rate | Complete | Complete | 268 rows, Jan 2004 to Apr 2026 |
+| 04 | BoE Mortgage Approvals | Complete | Complete | 267 rows, Jan 2004 to Mar 2026, UK-wide |
+| 05 | ONS CPIH | Complete | Complete | 1,828 rows, 4 components, Jan 1988 to Jan 2026 |
+| 06 | ONS AWE | Complete | Complete | 314 rows, Jan 2000 to Feb 2026, GB-wide |
+| 07 | LBTT Statistics | Complete | Complete | 132 rows each, Apr 2015 to Mar 2026, two tables |
+| 08 | DWP Claimant Count | Complete | Complete | 3,840 rows, 32 councils, Apr 2016 to Mar 2026 |
+| 09 | Scottish Postcode Lookup | Complete | Complete | 161,268 active postcodes, one-time load |
+
+## Planned Additional Sources
+
+| # | Source | Priority | Notes |
+|---|--------|----------|-------|
+| 10 | Scottish GDP (Scottish Government) | High | Quarterly, Scotland-specific economic indicator |
+| 11 | House Building Starts/Completions (Scottish Government) | High | Supply-side context |
+| 12 | Google Trends | High | Search interest as leading indicator, pytrends |
+| 13 | Edinburgh Festival Dates | High | Boolean flag, August transaction volume dip |
+| 14 | Met Office Historic Weather | Medium | Regional, correlates with transaction volumes |
+| 15 | School Performance (Scotxed) | Medium | Catchment effect on Edinburgh prices |
+| 16 | EPC Ratings | High | Property-level, joins to postcode lookup, highest payoff |
+
+## Known Gotchas
+- Unity Catalog must be created with explicit MANAGED LOCATION pointing at ADLS Gen2
+- BoE endpoints require User-Agent header to bypass Akamai block
+- `date` is a reserved word -- use `report_date`
+- `date_format` requires `.cast("timestamp")` on date columns
+- Two-digit year ambiguity in mmm-yy format -- use Python UDF instead of Spark to_date
+- Delta schema conflict if filtered-on column passed through to Spark -- filter in pandas first
+- UDF definition can reset active catalog -- use fully qualified table names after any UDF
+- NOMIS API has a 25k row cap -- split large date ranges into multiple requests
 
 ## Medallion Layers
 
